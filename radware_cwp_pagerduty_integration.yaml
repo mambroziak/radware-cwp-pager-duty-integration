@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Outputs:
+  InputTopicARN:
+    Description: 'SNS Topic ARN, destination for CWP Alerts'
+    Value:
+      Ref: InputTopic
+  QueueURL: 
+    Description: 'SQS Queue URL'
+    Value: 
+      Ref: LogsQueue
+  QueueARN: 
+    Description: 'SQS Queue ARN'
+    Value: 
+      Fn::GetAtt: 
+        - LogsQueue
+        - Arn        
+  S3LoggerLambdaFunction: 
+    Description: 'Name of the Lambda Function created'
+    Value: 
+      Ref: CWPS3LoggerFunction
+Parameters:
+  S3BucketForLogging:
+    Default: '<S3-Bucket-Name-Here>'
+    Description: 'REQUIRED - Target S3 Bucket for Logs (e.g. MyS3BucketName).'
+    Type: String
+  LogFolderPrefix:
+    Default: 'Radware-logs/CWP'
+    Description: 'REQUIRED - Log Folder Prefix. Context: s3://S3BucketName/<Log-Folder-Prefix>/...'
+    Type: String
+  LogObjectPrefix:
+    Default: 'CWPAlerts'
+    Description: 'REQUIRED - Log Object Prefix. Context: <Log-File-Prefix>_YYYYMMDDTHHMMZ_<Alphanumeric-String>.json'
+    Type: String
+  GzipEnabled:
+    Default: 'true'
+    Description: 'REQUIRED - Enable/disable gzip compression of log files. true/false'
+    Type: String
+Resources:
+  InputTopic:
+    Type: AWS::SNS::Topic
+  InputTopicPolicy:
+    Properties:
+      PolicyDocument:
+        Id: CwpSnsPolicy
+        Statement:
+        - Action: sns:Publish
+          Effect: Allow
+          Principal:
+            AWS: arn:aws:iam::342443945406:root
+          Resource:
+            Ref: InputTopic
+          Sid: CwpSnsPolicy
+        Version: '2012-10-17'
+      Topics:
+      - Ref: InputTopic
+    Type: AWS::SNS::TopicPolicy
+  CWPPageDutyFunction:
+    DependsOn: 
+      - LogsQueue
+    Properties:
+      CodeUri: 
+        Bucket: 
+          Fn::Join:
+          - ''
+          - - 'radware-cwp-devops-'
+            - !Ref 'AWS::Region'
+          # If deploying CFT manually, replace this join with a string (e.g. "Bucket: my-custom-bucket-name"
+        Key: 'radware_cwp_s3_logger/radware_cwp_s3_logger.zip'
+        # Key is the name of the zip file which contains lambda_function.py
+      Description: 'CWP-Alerts -> SNS -> SQS <- Lambda -> S3'
+      Environment:
+        Variables:
+          s3_bucket_for_logging:
+            Ref: S3BucketForLogging
+          queue_url: 
+            Ref: LogsQueue
+          log_folder_prefix:
+            Ref: LogFolderPrefix
+      Events:
+        cwpMessage:
+          Type: SNS
+          Properties:
+            Topic: !Ref InputTopic
+      FunctionName: !Ref AWS::StackName
+      Handler: lambda_function.lambda_handler
+      Policies:
+      - Statement:
+        - Action:
+          - s3:PutObject
+          - s3:PutObjectTagging
+          Effect: Allow
+          Resource:
+            Fn::Join: 
+            - ''
+            - - 'arn:aws:s3:::'
+              - !Ref S3BucketForLogging 
+              - '/*'
+        - Action:
+          - sqs:DeleteMessage
+          - sqs:ReceiveMessage
+          - sqs:GetQueueAttributes
+          Effect: Allow
+          Resource: 
+            Fn::GetAtt: 
+            - LogsQueue
+            - Arn
+        Version: '2012-10-17'
+      Runtime: python3.8
+      Timeout: 120
+    Type: AWS::Serverless::Function
+  LambdaLogsLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${CWPPageDutyFunction}"
+      RetentionInDays: 30
+Transform: AWS::Serverless-2016-10-31
