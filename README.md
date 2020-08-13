@@ -51,8 +51,7 @@ All done!
 2. Login and validate your are using same version of Python as this Lambda Function runtime (v3.8+).
 3. Clone this project `git clone https://github.com/mambroziak/radware-cwp-pager-duty-integration.git`
 4. Change into the project root directory `cd radware-cwp-pager-duty-integration`
-5. Change to root of the project directory.
-6. Run the following code to install the dependencies and build the Lambda deployment zip file.
+5. Run the following code to install the dependencies and build the Lambda deployment zip file.
 ```
 pip install --target ./package pdpyras
 # More info: https://github.com/PagerDuty/pdpyras
@@ -62,7 +61,7 @@ zip -r9 ${OLDPWD}/radware_cwp_pagerduty_integration.zip .
 cd $OLDPWD
 zip -g radware_cwp_pagerduty_integration.zip lambda_function.py
 ```
-7. Publish the deployment file to lambda.
+6. Publish the deployment file to lambda.
 ```
 aws lambda update-function-code \
  --function-name <my-function-name> \
