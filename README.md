@@ -25,8 +25,8 @@ This CFT stack has 5 parameters, 4 of which are configured during deployment:
 
 ### [Option 2] Manual CFT Deployment:
 1. Download the contents of this repo.
-1. Add `lambda_function.py` into the root of a zip file (e.g. `myfunction.zip`).
-1. Upload the zip file to an S3 bucket 
+1. Build your own Lambda deployment file (see Appendix A)
+1. Upload the deployment file to an S3 bucket 
 1. Modify `radware_cwp_pagerduty_integration.yaml` lines `47` and `52` and enter values for `bucket` and `key` (zip file), respectively. Remove lines `48-51`.
 1. Login to the AWS console, select a region, and navigate to CloudFormation. 
 1. Click **Create stack**
@@ -46,7 +46,7 @@ This CFT stack has 5 parameters, 4 of which are configured during deployment:
 1. Click **Activate**.
 All done!
 
-## Build your own deployment file to publish to Lambda
+## Appendix A: Build your own deployment file to publish to Lambda
 1. Create a new instance with Amazon Linux 
 2. Login and validate your are using same version of Python as this Lambda Function runtime (v3.8+).
 3. Clone this project `git clone https://github.com/mambroziak/radware-cwp-pager-duty-integration.git`
