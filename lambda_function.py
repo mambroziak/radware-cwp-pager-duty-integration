@@ -1,4 +1,4 @@
-# https://github.com/PagerDuty/pdpyras
+#!/usr/bin/python
 
 import os
 import json
@@ -12,40 +12,62 @@ cwp_score_filter = cwp_score_filter.split(',')
 
 
 def process_alert(msg):
+    # determine if event meets PD alert threshold
     if msg["score"] in cwp_score_filter:
-        payload = {
-            "summary": msg["subject"],
-            "source": f'{msg["accountVendor"]}:{msg["accountIds"][0]}/{msg["accountName"]}',
-            "timestamp": msg["lastDetectionDate"],
-            "severity": pd_event_severity,
-            "component": msg["resourceType"],
-            "group": msg["accountIds"][0],
-            "class": msg["category"],
-            "custom_details": {
-              "failedResources": msg["failedResources"],
-              "score": msg["score"],
-              "description": msg["description"],
-              "recommendation": msg["recommendation"]
+        # Alert objectType considerations for differences in metadata
+        if msg["objectType"] == 'Alert':
+            summary = msg["title"]
+            timestamp = msg["createdDate"]
+            custom_details = {
+              "involvedResource": msg["involvedResource"],
+              "riskScore": msg["score"],
+              "activities": msg["activities"],
+              "attackSteps": msg["attackSteps"],
             }
+        elif msg["objectType"] == 'WarningEntity':
+            summary = msg["subject"]
+            timestamp = msg["lastDetectionDate"]
+            custom_details = {
+                "accountName": msg["accountName"],
+                "failedResources": msg["failedResources"],
+                "riskScore": msg["score"],
+                "description": msg["description"],
+                "recommendation": msg["recommendation"],
+                "resourceType": msg["resourceType"]
+            }
+        else:
+            process_error = f'Alert (objectType) not supported: {msg["objectType"]}'
+            print(process_error)
+            return {"success": False, "comment": process_error}
+
+        links = [{"href": msg["objectPortalURL"], "text": "Link to event in Radware CWP Portal"}]
+
+        payload = {
+            "summary": summary,
+            "source": f'{msg["accountVendor"]}:{msg["accountIds"][0]}',
+            "timestamp": timestamp,
+            "severity": pd_event_severity,
+            "group": msg["accountIds"][0],
+            "custom_details": custom_details
         }
 
-        links = [{"href": msg["objectPortalURL"], "text": "Radware CWP Event"}]
-
+        # Create PD session and send event trigger
         session = pdpyras.EventsAPISession(pd_integration_key)
         dedup_key = session.trigger(summary=None, source=None, links=links, payload=payload)
 
         if dedup_key:
             success = True
-            comments = "Accepted and published to PagerDuty"
+            comment = "Accepted and published to PagerDuty"
         else:
             dedup_key = ""
             success = False
-            comments = "Error publishing alert to PagerDuty"
+            comment = "Error publishing alert to PagerDuty"
 
-        report = {"success": True, "score": msg["score"], "deduplication_key": dedup_key, "comments": comments}
+        # write report
+        report = {"success": True, "eventType": msg["objectType"], "riskScore": msg["score"], "deduplication_key": dedup_key, "comment": comment}
         return report
     else:
-        report = {"success": False, "score": msg["score"], "deduplication_key": "", "comments": "Discarded. Risk score did not meet threshold requirements."}
+        report = {"success": False, "eventType": msg["objectType"], "riskScore": msg["score"], "deduplication_key": "", "comment": "Discarded. Risk score did not meet threshold requirements."}
         return report
 
 

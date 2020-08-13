@@ -2,176 +2,119 @@
    "accountIds":[
       "870047315808"
    ],
-   "accountName":"SE_Training",
    "accountVendor":"AWS",
-   "objectType":"WarningEntity",
-   "objectPortalURL":"https://portal.cwp.radwarecloud.com/#/data-center/hardening/332417656708",
-   "id":"332417656708",
-   "title":"VPC Flow logging is not enabled in some VPCs",
-   "score":"4",
-   "createdDate":"2020-07-15T15:40:48",
+   "objectType":"Alert",
+   "objectPortalURL":"https://portal.cwp.radwarecloud.com/#/data-center/alert-details/300189817612",
+   "id":"300189817612",
+   "title":"Port Scanning",
+   "score":"7",
+   "createdDate":"2019-07-20T16:28:03",
+   "updatedDate":"2019-07-20T16:33:29",
    "vendor":"Radware",
    "apiVersion":"1.00",
-   "hardeningType":"Misconfiguration",
    "status":"NEW",
-   "category":"misconfigurationResult",
-   "resourceType":"VpcEntity",
-   "lastDetectionDate":"2020-07-15T15:40:48",
-   "description":"VPC Flow Logs is a feature that enables you to capture information about the IP traffic</br> going to and from network interfaces in your VPC. After you've created a flow log, you can</br> view and retrieve its data in Amazon CloudWatch Logs or S3.</br> VPC Flow Logs provide visibility into network traffic that traverses the VPC and can be</br> used to detect anomalous traffic or insight during security workflows.",
-   "recommendation":"Enable VPC Flow logs for your VPCs.</br>Refer to this <a href=\"https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html#create-flow-log\">AWS user guide</a> for help",
-   "subject":"VPC Flow logging is not enabled in some VPCs in account SE_Training (id:870047315808)",
-   "failedResources":[
+   "involvedResource":[
       {
-         "name":"VPC-SETRAINING-US",
-         "id":"vpc-05346d1c9dc9bbe82",
-         "createdDate":"2020-05-19T23:01:26",
-         "passed":true,
+         "accountId":"870047315808",
+         "accountVendor":"AWS",
+         "name":"attack-sim-1",
+         "id":"i-0c104e938df1f5dc4",
+         "vpcId":"vpc-05346d1c9dc9bbe82",
+         "vpcName":"VPC-SETRAINING-US",
+         "tags":"[{Key: Name,Value: attack-sim-1}, {Key: Type,Value: slave}]",
+         "creationDate":"2019-11-07T07:00:05",
+         "passed":false,
          "region":"us-east-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
+         "instanceType":"t2.micro",
+         "ipAddresses":[
+            null,
+            "10.0.0.139"
+         ],
+         "ami":"ami-09eb220f17c4ea73d",
+         "status":"stopped"
       },
       {
-         "name":"vpc-116c4776",
-         "id":"vpc-116c4776",
-         "createdDate":"2020-05-19T23:00:56",
+         "accountId":"870047315808",
+         "accountVendor":"AWS",
+         "name":"jenkins-1.se.us",
+         "id":"i-0538651176a83514e",
+         "vpcId":"vpc-05346d1c9dc9bbe82",
+         "vpcName":"VPC-SETRAINING-US",
+         "tags":"[{Key: Name,Value: jenkins-1.se.us}, {Key: Type,Value: master}]",
+         "creationDate":"2019-06-17T15:17:47",
          "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"ap-northeast-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"CLOUD-2",
-         "id":"vpc-1c395966",
-         "createdDate":"2020-05-19T23:01:26",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
          "region":"us-east-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-2854534f",
-         "id":"vpc-2854534f",
-         "createdDate":"2020-05-19T23:01:23",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"us-west-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-308c4b59",
-         "id":"vpc-308c4b59",
-         "createdDate":"2020-05-19T23:10:46",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"eu-north-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-407d992b",
-         "id":"vpc-407d992b",
-         "createdDate":"2020-05-19T23:01:11",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"us-east-2",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-48807f23",
-         "id":"vpc-48807f23",
-         "createdDate":"2020-05-19T23:01:30",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"ap-northeast-2",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-76dac31d",
-         "id":"vpc-76dac31d",
-         "createdDate":"2020-05-19T23:01:11",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"eu-central-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-7893f010",
-         "id":"vpc-7893f010",
-         "createdDate":"2020-05-19T23:01:12",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"eu-west-2",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-82f79cea",
-         "id":"vpc-82f79cea",
-         "createdDate":"2020-05-19T23:10:46",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"ca-central-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-87eb5dff",
-         "id":"vpc-87eb5dff",
-         "createdDate":"2020-05-19T23:01:21",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"us-west-2",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-93517cf4",
-         "id":"vpc-93517cf4",
-         "createdDate":"2020-05-19T23:01:30",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"ap-southeast-2",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-a8f8decf",
-         "id":"vpc-a8f8decf",
-         "createdDate":"2020-05-19T23:01:27",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"sa-east-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-e3ccfa8a",
-         "id":"vpc-e3ccfa8a",
-         "createdDate":"2020-05-19T23:01:25",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"eu-west-3",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-f3f8fb95",
-         "id":"vpc-f3f8fb95",
-         "createdDate":"2020-05-19T23:01:08",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"eu-west-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-f8f4cb9f",
-         "id":"vpc-f8f4cb9f",
-         "createdDate":"2020-05-19T23:01:02",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"ap-southeast-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
-      },
-      {
-         "name":"vpc-fcc6f694",
-         "id":"vpc-fcc6f694",
-         "createdDate":"2020-05-19T23:01:17",
-         "passed":false,
-         "detectionDate":"2020-08-03T05:43:48",
-         "region":"ap-south-1",
-         "link":"https://console.aws.amazon.com/vpc/home?#vpcs:VpcId=VPC_ID"
+         "instanceType":"t2.micro",
+         "ipAddresses":[
+            "18.214.37.89",
+            "10.0.0.240"
+         ],
+         "ami":"ami-05722dde7728ad43f",
+         "status":"running",
+         "publicIp":"18.214.37.89"
       }
-   ]
+   ],
+   "activities":[
+      {
+         "name":"shareAndRemoveEC2SnapshotPublic",
+         "activityId":"300189846167",
+         "title":"Share and unshare of storage volume snapshots by role radware-cwp-attack-test-role",
+         "detectionTime":"2019-07-20T16:33:29",
+         "attackStage":"DATA EXFILTRATION",
+         "source":"CloudTrail",
+         "invocationSource":"34.239.1.48",
+         "identity":"arn:aws:iam::870047315808:role/radware-cwp-attack-test-role",
+         "affectedResources":{
+            "targetComputer":"i-0f1a54ada9b4f46c0",
+            "snapshotId":"snap-0f01db565d9f87aff"
+         }
+      },
+      {
+         "name":"awsApiFailures",
+         "activityId":"300189846165",
+         "title":"Multiple AWS API Failures by user NjVjMmVjZmQw",
+         "detectionTime":"2019-07-20T16:28:03",
+         "attackStage":"RECONNAISSANCE",
+         "source":"CloudTrail",
+         "invocationSource":"34.234.225.176",
+         "identity":"arn:aws:iam::870047315808:user/NjVjMmVjZmQw",
+         "affectedResources":{
+
+         }
+      },
+      {
+         "name":"instanceCreation",
+         "activityId":"300189846163",
+         "title":"Instance Creation by user NjVjMmVjZmQw",
+         "detectionTime":"2019-07-20T16:26:49",
+         "attackStage":"PRIVILEGE ESCALATION",
+         "source":"CloudTrail",
+         "invocationSource":"34.234.225.176",
+         "identity":"arn:aws:iam::870047315808:user/NjVjMmVjZmQw",
+         "affectedResources":{
+            "targetComputer":"i-0f1a54ada9b4f46c0"
+         }
+      },
+      {
+         "name":"portScanning",
+         "activityId":"300189846162",
+         "title":"Port Scanning",
+         "detectionTime":"2019-07-20T16:24:42",
+         "attackStage":"SCANNING",
+         "source":"VPC Flow logs",
+         "invocationSource":"10.0.0.32",
+         "identity":"i-0f1a54ada9b4f46c0",
+         "affectedResources":{
+            "targetIp":"10.0.0.240",
+            "sourceIp":"10.0.0.32",
+            "targetComputer":"i-0538651176a83514e"
+         }
+      }
+   ],
+   "attackSteps":{
+      "PRIVILEGE ESCALATION":1,
+      "RECONNAISSANCE":1,
+      "DATA EXFILTRATION":1,
+      "SCANNING":1
+   }
 }
