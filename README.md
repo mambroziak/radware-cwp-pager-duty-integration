@@ -7,6 +7,9 @@ The CFT deployment process will create an SNS Topic, an IAM Role, CloudWatch Log
 
 ## Setup
 
+## Prerequisities
+* Create a **PagerDuty Integration Key** with _direct API_ access. [Read the docs](https://support.pagerduty.com/docs/services-and-integrations)
+
 ### CFT Parameters
 This CFT stack has 5 parameters, 4 of which are configured during deployment:
 
