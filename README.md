@@ -3,8 +3,6 @@
 
 This open source AWS tool consumes the published security findings detected in Radware CWP. This tool passes findings when the CWP risk score is matched in the score filter. Findings not found in the fitler will be discarded. Accepted findings will trigger an event in PagerDuty events API.
 
-<img src="docs/pictures/Radware_CWP_S3_Logger.jpg">
-
 The CFT deployment process will create an SNS Topic, an IAM Role, CloudWatch Log Group (default 30 days retention), and a Lambda Function. Messages published to the created SNS Topic trigger the Lambda Function on-demand.
 
 ## Setup
