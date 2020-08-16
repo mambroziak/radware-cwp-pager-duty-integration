@@ -1,4 +1,4 @@
-# Radware CWP Pager Duty Integration
+# Radware CWP PagerDuty Integration
 #### _with Events API_
 
 This open source AWS tool consumes the published security findings detected in Radware CWP. This tool passes findings when the CWP risk score is matched in the score filter. Findings not found in the fitler will be discarded. Accepted findings will trigger an event in PagerDuty events API.
