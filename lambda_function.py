@@ -38,21 +38,19 @@ def process_alert(msg):
             summary = msg["title"]
             timestamp = msg["createdDate"]
             custom_details = {
-              "involvedResource": msg["involvedResource"],
-              "riskScore": msg["score"],
-              "activities": msg["activities"],
-              "attackSteps": msg["attackSteps"],
+              "Event Type": "Alert",
+              "Risk Score": msg["score"]
             }
         elif msg["objectType"] == 'WarningEntity':
             summary = msg["subject"]
             timestamp = msg["lastDetectionDate"]
             custom_details = {
-                "accountName": msg["accountName"],
-                "failedResources": msg["failedResources"],
-                "riskScore": msg["score"],
-                "description": msg["description"],
-                "recommendation": msg["recommendation"],
-                "resourceType": msg["resourceType"]
+                "Event Type": "Warning",
+                "Account Name": msg["accountName"],
+                "Risk Score": msg["score"],
+                "Warning Description": msg["description"],
+                "Recommendation": msg["recommendation"],
+                "Resource Type": msg["resourceType"]
             }
         else:
             process_error = f'Alert (objectType) not supported: {msg["objectType"]}'
