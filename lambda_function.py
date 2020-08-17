@@ -1,4 +1,23 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+#
+# *******************************************************************************
+# Name: lambda_function.py
+# Version: v1.1
+# Description: This open source AWS tool consumes the published security findings detected in Radware CWP to then
+# trigger an event in the PagerDuty events API. The CWP Findings passed to PagerDuty are determined by the CWP risk
+# score filter within the tool. All other findings are discarded.
+#
+# Author: Matt Ambroziak, mambroziak@github
+# www.radware.com
+#
+# PIP Packages required:
+#  - pdpyras
+#
+# Environment Variables required:
+#  - pd_integration_key
+#  - pd_event_severity
+#  - cwp_score_filter
+# *******************************************************************************
 
 import os
 import json
@@ -64,7 +83,7 @@ def process_alert(msg):
             comment = "Error publishing alert to PagerDuty"
 
         # write report
-        report = {"success": True, "eventType": msg["objectType"], "riskScore": msg["score"], "deduplication_key": dedup_key, "comment": comment}
+        report = {"success": success, "eventType": msg["objectType"], "riskScore": msg["score"], "deduplication_key": dedup_key, "comment": comment}
         return report
     else:
         report = {"success": False, "eventType": msg["objectType"], "riskScore": msg["score"], "deduplication_key": "", "comment": "Discarded. Risk score did not meet threshold requirements."}

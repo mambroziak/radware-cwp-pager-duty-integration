@@ -1,7 +1,7 @@
 # Radware CWP PagerDuty Integration
 #### _with Events API_
 
-This open source AWS tool consumes the published security findings detected in Radware CWP. This tool passes findings when the CWP risk score is matched in the score filter. Findings not found in the fitler will be discarded. Accepted findings will trigger an event in PagerDuty events API.
+This open source AWS tool consumes the published security findings detected in Radware CWP to then trigger an event in the PagerDuty events API. The CWP Findings passed to PagerDuty are determined by the CWP risk score filter within the tool. All other findings are discarded. 
 
 The CFT deployment process will create an SNS Topic, an IAM Role, CloudWatch Log Group (default 30 days retention), and a Lambda Function. Messages published to the created SNS Topic trigger the Lambda Function on-demand.
 
@@ -49,12 +49,12 @@ This CFT stack has 5 parameters, 4 of which are configured during deployment:
 1. Click **Activate**.
 All done!
 
-## Appendix A: Build your own deployment file to publish to Lambda
-1. Create a new instance with Amazon Linux 
-2. Login and validate your are using same version of Python as this Lambda Function runtime (v3.8+).
+## Appendix A: Build your own deployment file to publish to AWS Lambda
+1. Create a new instance with an Amazon Linux AMI. 
+2. Login and validate the version of Python matches the latest Lambda Function runtime (v3.8 at the time of this writing) `python --version`.
 3. Clone this project `git clone https://github.com/mambroziak/radware-cwp-pager-duty-integration.git`
 4. Change into the project root directory `cd radware-cwp-pager-duty-integration`
-5. Run the following code to install the dependencies and build the Lambda deployment zip file.
+5. Run the following bash script to install the dependencies and build the Lambda deployment zip file.
 ```
 pip install --target ./package pdpyras
 # More info: https://github.com/PagerDuty/pdpyras
