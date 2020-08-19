@@ -68,7 +68,7 @@ zip -g radware_cwp_pagerduty_integration.zip lambda_function.py
 ```
 aws lambda update-function-code \
  --function-name <my-function-name> \
- --zip-file fileb://radware_cwp_pagerduty_integration.zip\
+ --zip-file fileb://radware_cwp_pagerduty_integration.zip \
  --publish \
  --region=us-east-1
 ```
