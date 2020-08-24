@@ -8,7 +8,7 @@
    "objectPortalURL":"https://portal.cwp.radwarecloud.com/#/data-center/hardening/332417656708",
    "id":"332417656708",
    "title":"VPC Flow logging is not enabled in some VPCs",
-   "score":"4",
+   "score":"7",
    "createdDate":"2020-07-15T15:40:48",
    "vendor":"Radware",
    "apiVersion":"1.00",
