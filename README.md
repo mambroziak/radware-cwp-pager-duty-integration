@@ -1,5 +1,5 @@
 # Radware CWP PagerDuty Integration
-#### _with Events API_
+*with PD Events API*
 
 This open source AWS tool consumes the published security findings detected in Radware CWP to then trigger an event in the PagerDuty events API. The CWP Findings passed to PagerDuty are determined by the CWP risk score filter within the tool. All other findings are discarded. 
 
@@ -11,7 +11,7 @@ The CFT deployment process will create an SNS Topic, an IAM Role, CloudWatch Log
 * Create a **PagerDuty Integration Key** with _direct API_ access. [Read the docs](https://support.pagerduty.com/docs/services-and-integrations)
 
 ### CFT Parameters
-This CFT stack has 5 parameters, 4 of which are configured during deployment:
+This CFT stack has 3 parameters:
 
 - **PagerDutyIntegrationKey** -  PagerDuty integration (routing) key
 - **PagerDutySeverity** - PagerDuty event severity level for alerts (values: `critical`/`error`/`warning`/`info`)
@@ -28,7 +28,7 @@ This CFT stack has 5 parameters, 4 of which are configured during deployment:
 
 ### [Option 2] Manual CFT Deployment:
 1. Download the contents of this repo.
-1. Build your own Lambda deployment file (see Appendix A)
+1. Build your own Lambda deployment file (see [Appendix A](#appendix-A))
 1. Upload the deployment file to an S3 bucket 
 1. Modify `radware_cwp_pagerduty_integration.yaml` lines `47` and `52` and enter values for `bucket` and `key` (zip file), respectively. Remove lines `48-51`.
 1. Login to the AWS console, select a region, and navigate to CloudFormation. 
@@ -49,26 +49,50 @@ This CFT stack has 5 parameters, 4 of which are configured during deployment:
 1. Click **Activate**.
 All done!
 
-## Appendix A: Build your own deployment file to publish to AWS Lambda
+### Testing:
+##### Option 1: Synthetic Test
+1. Find the sample CWP JSON files in the `samples` directory from this repo for *WarningEntity* and *Alert* payloads.
+1. From the CFT stack deployment in the AWS Console, open the SNS topic found in the **Resources** tab, shown as **InputTopic**.
+1. At the top-right, click the **Publish message** button and copy and paste the contents of one of the JSON files into the **Message body** field. (You may need the ``score`` value in the payload to include a value in your `CwpScoreFilter` parameter)
+1. Scroll down and click the **Publish messsage** button. 
+1. Validate the results in S3.
+
+##### Option 2 - CWP Native Test
+It is recommended to perform the synthetic test first before attempting a CWP native test.
+1. Temporarily set the `CwpScoreFilter` parameter to `4,5,6,7,8,9,10`
+1. Login to an AWS account that is already protected by Radware CWP with [automated response](#radware-cwp-setup).
+1. Create a test S3 bucket and set the bucket policy to allow public acess. You should see Public warnings in the AWS console. This will trigger CWP and push a *WarningEntity* payload.
+1. Validate the Lambda function logs and the results in S3.
+1. Reset the `CwpScoreFilter` parameter to the desired value (e.g. `7,8,9,10`)
+1. Cleanup the S3 bucket created for this test.
+
+## Appendix A
+**Build your own deployment file to publish to AWS Lambda**
 1. Create a new instance with an Amazon Linux AMI. 
 2. Login and validate the version of Python matches the latest Lambda Function runtime (v3.8 at the time of this writing) `python --version`.
 3. Clone this project `git clone https://github.com/mambroziak/radware-cwp-pager-duty-integration.git`
 4. Change into the project root directory `cd radware-cwp-pager-duty-integration`
-5. Run the following bash script to install the dependencies and build the Lambda deployment zip file.
+5. Run the following bash script to install the dependencies.
 ```
 pip install --target ./package pdpyras
 # More info: https://github.com/PagerDuty/pdpyras
+```
+6. Build the Lambda deployment zip file
+```
+# Cleanup stale deployment file
+rm ./radware_cwp_pagerduty_integration.zip
+# Build the deployment file
 chmod -R 755 .
 cd package
 zip -r9 ${OLDPWD}/radware_cwp_pagerduty_integration.zip .
 cd $OLDPWD
 zip -g radware_cwp_pagerduty_integration.zip lambda_function.py
 ```
-6. Publish the deployment file to lambda.
+7. Publish the deployment file to lambda.
 ```
 aws lambda update-function-code \
  --function-name <my-function-name> \
- --zip-file fileb://radware_cwp_pagerduty_integration.zip \
+ --zip-file fileb://radware_cwp_pagerduty_integration.zip\
  --publish \
  --region=us-east-1
 ```
